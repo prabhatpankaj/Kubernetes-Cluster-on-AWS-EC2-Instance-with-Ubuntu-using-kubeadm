@@ -34,3 +34,42 @@ It is an abstraction that defines a logical set of Pods and a policy by which to
 
 * API Server, etcd,  Controller Manager &  Scheduler, are the components of the Master and  Docker,  Kubelet Service & Kubernetes Proxy Service are the components of Worker Node.
 
+# Pre-requisites
+
+3 Ubuntu 18.04 Servers with minimum 2 GBs RAM and 2 CPUs.\
+A system user with "sudo" access on each server. 
+
+# What we will do
+Setup a Kubernetes Cluster with kubeadm
+
+We have 3 Ubuntu 18.04 LTS Servers.
+
+Server 1= node1\
+Server 2= node2\
+Server 3= master
+
+Before we proceed with the actual installation, let's change the hostname of the servers.
+
+```
+
+sudo hostnamectl set-hostname "master"
+sudo hostnamectl set-hostname "node1"
+sudo hostnamectl set-hostname "node2"
+
+```
+
+# Follow the steps mentioned below to bring up the working Kubernets cluster.
+
+Get the Docker gpg key (Execute the following command on All the Nodes):
+
+```
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+```
+
+Add the Docker repository(Execute the following command on All the Nodes):
+
+```
+sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+  stable"
+```
