@@ -60,16 +60,60 @@ sudo hostnamectl set-hostname "node2"
 
 # Follow the steps mentioned below to bring up the working Kubernets cluster.
 
-Get the Docker gpg key (Execute the following command on All the Nodes):
+* Get the Docker gpg key (Execute the following command on All the Nodes):
 
 ```
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 ```
 
-Add the Docker repository(Execute the following command on All the Nodes):
+* Add the Docker repository(Execute the following command on All the Nodes):
 
 ```
 sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
   stable"
+```
+
+* Get the Kubernetes gpg key(Execute the following command on All the Nodes):
+
+```
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+```
+
+* Add the Kubernetes repository(Execute the following command on All the Nodes):
+
+```
+cat << EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+```
+
+* Update your packages(Execute the following command on All the Nodes): 
+
+```
+sudo apt-get update
+```
+
+* Install Docker, kubelet, kubeadm, and kubectl(Execute the following command on All the Nodes):
+
+```
+sudo apt-get install -y docker-ce=18.06.1~ce~3-0~ubuntu kubelet=1.15.7-00 kubeadm=1.15.7-00 kubectl=1.15.7-00
+```
+
+* Hold them at the current version(Execute the following command on All the Nodes):
+
+```
+sudo apt-mark hold docker-ce kubelet kubeadm kubectl
+```
+
+* Add the iptables rule to sysctl.conf (Execute the following command on All the Nodes):
+
+```
+echo "net.bridge.bridge-nf-call-iptables=1" | sudo tee -a /etc/sysctl.conf
+```
+
+* Enable iptables immediately(Execute the following command on All the Nodes:
+
+```
+sudo sysctl -p
 ```
