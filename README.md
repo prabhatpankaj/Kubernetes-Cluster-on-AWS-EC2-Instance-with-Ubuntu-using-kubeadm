@@ -181,7 +181,9 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 ```
 
-# On Node1 and Node 2 , Token from master cluster: 
+# On Node1 and Node 2
+* Token from master cluster
+* enable post 6443 in security group
 
 * Join the worker nodes to the cluster (Execute the following command only on Node1 and Node2):
 
