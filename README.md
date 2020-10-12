@@ -122,49 +122,15 @@ sudo sysctl -p
 * At this point we create the cluster by initiating the master with kubeadm. Only do this on the master node.
 
 ```
-sudo apt-get install sipcalc
-
-ifconfig
-```
-* you should get somthing like this 
-
-```
-eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 9001
-        inet 172.31.63.19  netmask 255.255.240.0  broadcast 172.31.63.255
-        inet6 fe80::10f2:f3ff:fe0a:b86e  prefixlen 64  scopeid 0x20<link>
-        ether 12:f2:f3:0a:b8:6e  txqueuelen 1000  (Ethernet)
-        RX packets 80837  bytes 117959539 (117.9 MB)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 4168  bytes 413343 (413.3 KB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-```
-* sipcalc 172.31.63.19/16
-
-```
--[ipv4 : 172.31.63.19/16] - 0
-
-[CIDR]
-Host address		- 172.31.63.19
-Host address (decimal)	- 2887728915
-Host address (hex)	- AC1F3F13
-Network address		- 172.31.0.0
-Network mask		- 255.255.0.0
-Network mask (bits)	- 16
-Network mask (hex)	- FFFF0000
-Broadcast address	- 172.31.255.255
-Cisco wildcard		- 0.0.255.255
-Addresses in network	- 65536
-Network range		- 172.31.0.0 - 172.31.255.255
-Usable range		- 172.31.0.1 - 172.31.255.254
-
--
-
-```
 
 * Initialize the cluster (Execute the following command only on the Master node):
 
+Note: The parameter pod-network-cidr changes as per the network option.
+
+Example: The suggested CIDR for flannel and canal networks is 10.244.0.0/16 and for calico network it could be 192.168.0.0/16.
+
 ```
-sudo kubeadm init --pod-network-cidr=172.31.0.0/16
+sudo kubeadm init --pod-network-cidr=192.168.0.0/16
 ```
 
 * Set up local kubeconfig(Execute the following command only on the Master node):
@@ -175,10 +141,11 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
-* Apply Flannel CNI network overlay(Execute the following command only on the Master node):
+* Install calico network plugin
 
 ```
-sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml 
+kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml
 ```
 
 # On Node1 and Node 2
