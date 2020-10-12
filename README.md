@@ -72,6 +72,7 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
   stable"
+  
 ```
 
 * Get the Kubernetes gpg key(Execute the following command on All the Nodes):
@@ -104,6 +105,7 @@ sudo apt-get install -y docker-ce=18.06.1~ce~3-0~ubuntu kubelet=1.15.7-00 kubead
 
 ```
 sudo apt-mark hold docker-ce kubelet kubeadm kubectl
+
 ```
 
 * Add the iptables rule to sysctl.conf (Execute the following command on All the Nodes):
@@ -116,21 +118,19 @@ echo "net.bridge.bridge-nf-call-iptables=1" | sudo tee -a /etc/sysctl.conf
 
 ```
 sudo sysctl -p
+
 ```
-# On Master: 
+# On Master
 
 * At this point we create the cluster by initiating the master with kubeadm. Only do this on the master node.
 
-```
-
-* Initialize the cluster (Execute the following command only on the Master node):
-
-Note: The parameter pod-network-cidr changes as per the network option.
-
+Initialize the cluster (Execute the following command only on the Master node)\
+Note: The parameter pod-network-cidr changes as per the network option.\
 Example: The suggested CIDR for flannel and canal networks is 10.244.0.0/16 and for calico network it could be 192.168.0.0/16.
 
 ```
 sudo kubeadm init --pod-network-cidr=192.168.0.0/16
+
 ```
 
 * Set up local kubeconfig(Execute the following command only on the Master node):
@@ -139,14 +139,18 @@ sudo kubeadm init --pod-network-cidr=192.168.0.0/16
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
 ```
 
 * Install calico network plugin
 
 ```
-kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml 
+kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml
+
 kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml
+
 ```
+
 
 # On Node1 and Node 2
 * Token from master cluster
@@ -165,4 +169,5 @@ sudo kubeadm join 172.31.33.136:6443 --token nitr0b.97j2g37dmlbts3oc \
 
 ```
 kubectl get nodes
+
 ```
