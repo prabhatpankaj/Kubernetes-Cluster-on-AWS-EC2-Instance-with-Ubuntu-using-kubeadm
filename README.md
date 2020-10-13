@@ -171,3 +171,8 @@ sudo kubeadm join 172.31.33.136:6443 --token nitr0b.97j2g37dmlbts3oc \
 kubectl get nodes
 
 ```
+
+# IAM role and permission 
+
+* https://github.com/kubernetes/cloud-provider-aws
+
